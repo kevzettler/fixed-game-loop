@@ -6,21 +6,21 @@
 <body>
   <canvas id='game' width='300' height='300' style='border: 1px solid;'></canvas>
 
-  <script src="../build/fixed-timer.min.js"></script>
+  <script src="../src/fixed-timer.js"></script>
   <script src="stats.js"></script>
   <script>
     var ctx = document.getElementById('game').getContext('2d'),
-      stats = new Stats(), // used on fps measurement
+      stats = new Stats(), // used to fps measurement
       timer;
 
       document.body.appendChild(stats.domElement);
 
       timer = new Timer(function() {
+        // tick function
         stats.begin(); // start fps measurement
 
-        for(var i = 0; i < 1; ++i) {
-          // draw um text with gradient color
-          // it's an hard draw operation
+        for(var i = 0; i < 100; ++i) {
+          // draw a gradient
           ctx.font = "40px Verdana";
           var gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
           gradient.addColorStop(0, "#f00");
@@ -28,11 +28,10 @@
           gradient.addColorStop(1, "#00f");
           ctx.fillStyle = gradient;
           ctx.fillRect(0,0,300,300);
-          //ctx.fillText("Gradient Text", 10, 90);
         }
 
         stats.end(); // finish fps measurement
-      }, 30 /* fps */);
+      }, null,  30 /* fps */);
   </script>
 </body>
 </html>

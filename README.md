@@ -5,7 +5,7 @@
 // create a timer
 var timer = new Timer(function() {
   /* called every 33 milliseconds */
-}, 30 /* frequency (in Hz) or fps (default is 60) */);
+}, 30 /* frames per second (default is 60) */);
 
 timer.pause(); // pauses the timer
 

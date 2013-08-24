@@ -29,16 +29,17 @@
    * @param ontick - timer callback
    * @param freq [default=60] - frequency of timer/frames per second (optional)
    */
-  function Timer(ontick, freq) {
+  function Timer(ontick, ondraw, fps) {
     if (typeof ontick !== 'function') {
-      throw 'invalid argument';
+      throw "[Timer] TypeError: First argument of the constructor is not of type Function";
     }
 
     this._ontick = ontick;
+    this._ondraw = typeof ondraw === 'function' ? ondraw : undefined;
+    this._fps = typeof fps === 'number' && fps > 0 ? fps : 60,
 
-    this.FREQUENCY = typeof freq === 'number' && freq > 0 ? freq : 60,
-    this._timeStep = 1000/this.FREQUENCY,
-    this._timeStepMax = this._timeStep * 20,
+    this._timePerFrame = 1000/this._fps,
+    this._timePerFrameMax = this._timePerFrame * 2,
     this._accumulator = 0;
 
     this._isPaused = false;
@@ -49,37 +50,27 @@
   }
 
   Timer.prototype = {
-    /** timer fps (readonly) */
-    FREQUENCY: null,
-
-    /** privates */
-    _timeStep: null,
-    _timeStepMax: null,
-    _previousTime: null,
-    _accumulator: null,
-    _isPaused: null,
-    _ontick: null,
-    _requestID: null,
-
     /** resumes the timer */
     resume: function() {
-      if (!this._isPaused) {
-        return;
+      if (!this._requestID || !this._isPaused) {
+        return false;
       }
 
       this._isPaused = false;
       this._previousTime = Date.now();
       this._requestID = window.requestAnimationFrame(this._tick2);
+      return true;
     },
 
     /** pauses the timer */
     pause: function() {
-      if (this._isPaused) {
-        return;
+      if (!this._requestID || this._isPaused) {
+        return false;
       }
 
       this._isPaused = true;
       window.cancelAnimationFrame(this._requestID);
+      return true;
     },
 
     /** returns true if the timer is paused */
@@ -88,29 +79,32 @@
     },
 
     _tick: function() {
-      var currentTime = Date.now();
+      var currentTime = Date.now(),
+        redraw = false;
 
       this._accumulator += currentTime - this._previousTime;
       this._previousTime = currentTime;
 
-      if (this._accumulator > this._timeStepMax) {
-        this._accumulator = this._timeStepMax;
+      if (this._accumulator > this._timePerFrameMax) {
+        this._accumulator = this._timePerFrameMax;
       }
 
-      while(this._accumulator > this._timeStep) {
+      while(this._accumulator > this._timePerFrame) {
+        this._accumulator -= this._timePerFrame;
         this._ontick();
-        this._accumulator -= this._timeStep;
+        redraw = true;
+      }
+
+      if (redraw && this._ondraw) {
+        this._ondraw();
       }
 
       this._requestID = window.requestAnimationFrame(this._tick2);
     }
   };
 
-  if (typeof module === 'object' && module.exports) {
-    module.exports = Timer; // CommonJS Module
-  } else {
-    window.Timer = Timer; // turns it global
-  }
+  // return the current time in milliseconds
+  Date.now = Date.now || function(){return (new Date()).getTime();};
 
   /** requestAnimationFrame polyfill
    * based on:
@@ -150,6 +144,9 @@
     window.cancelAnimationFrame = cancelAnimationFrame;
   }(window.Math));
 
-  // return the current time in milliseconds
-  Date.now = Date.now || function(){return (new Date()).getTime();};
+  if (typeof module === 'object' && module.exports) {
+    module.exports = Timer; // CommonJS Module
+  } else {
+    window.Timer = Timer; // turns it a global
+  }
 })(window, window.Date);
