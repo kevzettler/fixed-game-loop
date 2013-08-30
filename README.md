@@ -1,4 +1,4 @@
-#FixedTimerJS v0.0.1
+#Fixed Game Loop v0.1.0
 
 ###Usage
 ```javascript
@@ -26,4 +26,4 @@ timer.resume(); // resumes the timer
 ```
 ===
 ###License
-Licensed under MIT License (MIT). Copyright (c) 2013 Luiz Paulo "Bills" Brandão
+Licensed under MIT License (MIT). Copyright (c) 2013 Luiz "Bills"
