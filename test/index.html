@@ -6,16 +6,17 @@
 <body>
   <canvas id='game' width='300' height='300' style='border: 1px solid;'></canvas>
 
-  <script src="../src/fixed-timer.js"></script>
+  <script src="bundle.js"></script>
   <script src="stats.js"></script>
   <script>
     var ctx = document.getElementById('game').getContext('2d'),
       stats = new Stats(), // used to fps measurement
-      timer;
+      Timer = require('../'),
+      timer = new Timer(45);
 
       document.body.appendChild(stats.domElement);
 
-      timer = new Timer(function() {
+      timer.ondraw(function() {
         // tick function
         stats.begin(); // start fps measurement
 
@@ -31,7 +32,9 @@
         }
 
         stats.end(); // finish fps measurement
-      }, null,  30 /* fps */);
+      });
+
+      timer.start();
   </script>
 </body>
 </html>

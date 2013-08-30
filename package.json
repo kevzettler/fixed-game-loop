@@ -1,0 +1,28 @@
+{
+  "name": "fixed-game-loop",
+  "version": "0.0.1",
+  "description": "a fixed game loop",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LiteEngine/fixed-game-loop.git"
+  },
+  "keywords": [
+    "game",
+    "loop",
+    "tick",
+    "draw",
+    "timer"
+  ],
+  "author": "Luiz \"Bills\"",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LiteEngine/fixed-game-loop/issues"
+  }
+}

@@ -3,9 +3,18 @@
 ###Usage
 ```javascript
 // create a timer
-var timer = new Timer(function() {
-  /* called every 33 milliseconds */
-}, 30 /* frames per second (default is 60) */);
+var GameLoop = require('fixed-game-loop');
+var timer = new GameLoop(30 /*fps [default=60]*/);
+
+timer.ontick(function() {
+	console.log('updating...');
+});
+
+timer.ondraw(function() {
+	console.log('drawing...');
+});
+
+timer.start(); // starts the timer
 
 timer.pause(); // pauses the timer
 
