@@ -5,6 +5,7 @@
  */
 var now = require('./date-now'),
   vendors = ['ms', 'moz', 'webkit', 'o'],
+  window = global,
 
   requestAnimationFrame = window.requestAnimationFrame,
   cancelAnimationFrame = window.cancelAnimationFrame,
