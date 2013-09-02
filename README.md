@@ -1,4 +1,4 @@
-#Fixed Game Loop v0.1.0
+#Fixed Game Loop v0.1.1
 
 ###Usage
 ```javascript
