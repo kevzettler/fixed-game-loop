@@ -29,6 +29,7 @@ if (timer.isPaused()) {
 
 timer.resume(); // resumes the timer
 ```
+
 ===
 ###License
 Licensed under MIT License (MIT). Copyright (c) 2013 Luiz "Bills"
