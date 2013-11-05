@@ -1,0 +1,32 @@
+{
+  "name": "fixed-game-loop",
+  "version": "0.1.1",
+  "description": "a fixed game loop",
+  "author": {
+    "name": "Luiz \"Bills\""
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LiteEngine/fixed-game-loop.git"
+  },
+  "keywords": [
+    "game",
+    "loop",
+    "tick",
+    "draw",
+    "timer"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LiteEngine/fixed-game-loop/issues"
+  },
+  "readme": "#Fixed Game Loop v0.1.1\r\n\r\n###Usage\r\n```javascript\r\n// create a timer\r\nvar GameLoop = require('fixed-game-loop');\r\nvar timer = new GameLoop(30 /*fps [default=60]*/);\r\n\r\ntimer.ontick(function() {\r\n\tconsole.log('updating...');\r\n});\r\n\r\ntimer.ondraw(function() {\r\n\tconsole.log('drawing...');\r\n});\r\n\r\ntimer.start(); // starts the timer\r\n\r\ntimer.pause(); // pauses the timer\r\n\r\nif (timer.isPaused()) {\r\n  console.log('timer is paused'); \r\n}\r\n\r\ntimer.resume(); // resumes the timer\r\n```\r\n===\r\n###License\r\nLicensed under MIT License (MIT). Copyright (c) 2013 Luiz \"Bills\"\r\n",
+  "readmeFilename": "README.md",
+  "_id": "fixed-game-loop@0.1.1",
+  "dist": {
+    "shasum": "3d9938b6b0294d201c6695e4bd4ae0517da72e5d"
+  },
+  "_from": "fixed-game-loop@",
+  "_resolved": "https://registry.npmjs.org/fixed-game-loop/-/fixed-game-loop-0.1.1.tgz"
+}
