@@ -1,7 +1,6 @@
 // return the current time in milliseconds
-var window = global,
-  Date = window.Date;
+var d = global.Date;
 
-module.exports = Date.now || function () {
-  return (new Date()).getTime();
+module.exports = d.now || function () {
+  return (new d()).getTime();
 };

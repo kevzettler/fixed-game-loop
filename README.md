@@ -1,4 +1,9 @@
-#Fixed Game Loop v0.1.1
+#Fixed Game Loop v0.1.2
+
+###Install
+```javascript
+npm install fixed-game-loop
+```
 
 ###Usage
 ```javascript

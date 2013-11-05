@@ -1,22 +1,23 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"KkGNIf":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"qCJbFB":[function(require,module,exports){
 module.exports = require('./src/fixed-game-loop.js');
 
-},{"./src/fixed-game-loop.js":3}],2:[function(require,module,exports){
-var global=self;// return the current time in milliseconds
-var window = global,
-  Date = window.Date;
+},{"./src/fixed-game-loop.js":4}],"../":[function(require,module,exports){
+module.exports=require('qCJbFB');
+},{}],3:[function(require,module,exports){
+var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};// return the current time in milliseconds
+var d = global.Date;
 
-module.exports = Date.now || function () {
-  return (new Date()).getTime();
+module.exports = d.now || function () {
+  return (new d()).getTime();
 };
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var now = require('./date-now'),
   raf = require('./raf');
 
 function tick() {
   var currentTime = Date.now(),
-    redraw = false,
+    needRedraw = false,
     i, l;
 
   this._accumulator += currentTime - this._previousTime;
@@ -30,16 +31,16 @@ function tick() {
     this._accumulator -= this._timePerFrame;
     l = this._ontick.length;
     if (l > 0) {
-      for (var i = 0; i < l; ++i) {
+      for (i = 0; i < l; ++i) {
         this._ontick[i](); 
       }
     }
-    redraw = true;
+    needRedraw = true;
   }
 
   l = this._ondraw.length;
-  if (redraw && l > 0) {
-    for (var i = 0; i < l; ++i) {
+  if (needRedraw && l > 0) {
+    for (i = 0; i < l; ++i) {
       this._ondraw[i]();
     }
   }
@@ -123,33 +124,32 @@ Timer.prototype = {
 
 module.exports = Timer; // CommonJS Module
 
-},{"./date-now":2,"./raf":4}],4:[function(require,module,exports){
-var global=self;/** requestAnimationFrame polyfill
- * based on:
+},{"./date-now":3,"./raf":5}],5:[function(require,module,exports){
+var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};/** requestAnimationFrame polyfill
  * http://paulirish.com/2011/requestanimationframe-for-smart-animating/
  * http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
  */
-var now = require('./date-now'),
-  vendors = ['ms', 'moz', 'webkit', 'o'],
-  window = global,
+var vendors = ['ms', 'moz', 'webkit', 'o'],
 
-  requestAnimationFrame = window.requestAnimationFrame,
-  cancelAnimationFrame = window.cancelAnimationFrame,
+  requestAnimationFrame = global.requestAnimationFrame,
+  cancelAnimationFrame = global.cancelAnimationFrame,
 
-  Math = window.Math,
-  lastTime = 0, x, l;
+  x = 0, l = vendors.length;
 
-for (x = 0, l = vendors.length; x < l; ++x) {
+for (; x < l; ++x) {
   if (requestAnimationFrame && cancelAnimationFrame) break;
-  requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-  cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+  requestAnimationFrame = global[vendors[x] + 'RequestAnimationFrame'];
+  cancelAnimationFrame = global[vendors[x] + 'CancelAnimationFrame'] || global[vendors[x] + 'CancelRequestAnimationFrame'];
 }
 
 if (!requestAnimationFrame || !cancelAnimationFrame) {
-  requestAnimationFrame = function (callback, element) {
+  var now = require('./date-now'),
+    lastTime = 0, max = Math.max;
+
+  requestAnimationFrame = function(callback, element) {
     var currTime = now(),
       timeToCall = Math.max(0, 16 - (currTime - lastTime)),
-      id = window.setTimeout(function () {
+      id = global.setTimeout(function () {
         callback(currTime + timeToCall);
       }, timeToCall);
     lastTime = currTime + timeToCall;
@@ -157,14 +157,12 @@ if (!requestAnimationFrame || !cancelAnimationFrame) {
   };
 
   cancelAnimationFrame = function (id) {
-    window.clearTimeout(id);
+    global.clearTimeout(id);
   };
 }
 
-module.exports.request = requestAnimationFrame.bind(window);
-module.exports.cancel = cancelAnimationFrame.bind(window);
+module.exports.request = requestAnimationFrame.bind(global);
+module.exports.cancel = cancelAnimationFrame.bind(global);
 
-},{"./date-now":2}],"../":[function(require,module,exports){
-module.exports=require('KkGNIf');
-},{}]},{},[])
+},{"./date-now":3}]},{},[])
 ;

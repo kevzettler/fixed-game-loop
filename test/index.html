@@ -16,8 +16,8 @@
 
       document.body.appendChild(stats.domElement);
 
+      // tick callback
       timer.ondraw(function() {
-        // tick function
         stats.begin(); // start fps measurement
 
         for(var i = 0; i < 100; ++i) {

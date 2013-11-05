@@ -3,7 +3,7 @@ var now = require('./date-now'),
 
 function tick() {
   var currentTime = Date.now(),
-    redraw = false,
+    needRedraw = false,
     i, l;
 
   this._accumulator += currentTime - this._previousTime;
@@ -17,16 +17,16 @@ function tick() {
     this._accumulator -= this._timePerFrame;
     l = this._ontick.length;
     if (l > 0) {
-      for (var i = 0; i < l; ++i) {
+      for (i = 0; i < l; ++i) {
         this._ontick[i](); 
       }
     }
-    redraw = true;
+    needRedraw = true;
   }
 
   l = this._ondraw.length;
-  if (redraw && l > 0) {
-    for (var i = 0; i < l; ++i) {
+  if (needRedraw && l > 0) {
+    for (i = 0; i < l; ++i) {
       this._ondraw[i]();
     }
   }
