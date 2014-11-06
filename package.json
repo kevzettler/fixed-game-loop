@@ -1,16 +1,32 @@
 {
   "name": "fixed-game-loop",
-  "version": "0.1.2",
-  "description": "a fixed game loop",
-  "author": "Luiz \"Bills\"",
+  "version": "0.2.0",
+  "description": "a fixed-rate game loop",
+  "author": "Luiz \"Bills\" <luizpbills@gmail.com>",
+
   "main": "index.js",
+  "scripts": {
+    "build": "browserify ./ -s Timer > build/fixed-game-loop.js"
+  },
+
   "repository": {
     "type": "git",
     "url": "https://github.com/LiteEngine/fixed-game-loop.git"
   },
-  "keywords": ["game","loop","tick","draw","timer"],
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/LiteEngine/fixed-game-loop/issues"
-  }
+  },
+
+  "keywords": [
+    "fixed",
+    "game",
+    "loop",
+    "tick",
+    "update",
+    "draw",
+    "render",
+    "pause",
+    "timer"
+  ],
+  "license": "MIT"
 }

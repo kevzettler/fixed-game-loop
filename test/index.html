@@ -1,40 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>LoopJS Test</title>
+  <title>Test</title>
 </head>
 <body>
   <canvas id='game' width='300' height='300' style='border: 1px solid;'></canvas>
 
-  <script src="bundle.js"></script>
+  <p>Press ENTER to pause/resume</p>
+  <p>elapsed time = <span id="elapsed">0</span> seconds</p>
+
+  <script src="../build/fixed-game-loop.js"></script>
   <script src="stats.js"></script>
-  <script>
-    var ctx = document.getElementById('game').getContext('2d'),
-      stats = new Stats(), // used to fps measurement
-      Timer = require('../'),
-      timer = new Timer(45);
-
-      document.body.appendChild(stats.domElement);
-
-      // tick callback
-      timer.ondraw(function() {
-        stats.begin(); // start fps measurement
-
-        for(var i = 0; i < 100; ++i) {
-          // draw a gradient
-          ctx.font = "40px Verdana";
-          var gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
-          gradient.addColorStop(0, "#f00");
-          gradient.addColorStop(0.5, "#0f0");
-          gradient.addColorStop(1, "#00f");
-          ctx.fillStyle = gradient;
-          ctx.fillRect(0,0,300,300);
-        }
-
-        stats.end(); // finish fps measurement
-      });
-
-      timer.start();
-  </script>
+  <script src="usage.js"></script>
 </body>
 </html>

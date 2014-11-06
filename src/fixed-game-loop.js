@@ -1,52 +1,24 @@
 var now = require('./date-now'),
   raf = require('./raf');
 
-function tick() {
-  var currentTime = Date.now(),
-    needRedraw = false,
-    i, l;
-
-  this._accumulator += currentTime - this._previousTime;
-  this._previousTime = currentTime;
-
-  if (this._accumulator > this._timePerFrameMax) {
-    this._accumulator = this._timePerFrameMax;
-  }
-
-  while (this._accumulator > this._timePerFrame) {
-    this._accumulator -= this._timePerFrame;
-    l = this._ontick.length;
-    if (l > 0) {
-      for (i = 0; i < l; ++i) {
-        this._ontick[i](); 
-      }
-    }
-    needRedraw = true;
-  }
-
-  l = this._ondraw.length;
-  if (needRedraw && l > 0) {
-    for (i = 0; i < l; ++i) {
-      this._ondraw[i]();
-    }
-  }
-
-  this._requestID = raf.request(this._tick);
-}
+module.exports = Timer;
 
 /**
  * @constructor
- * @param fps [default=60] - frequency of timer/frames per second (optional)
  */
-function Timer(fps) {
+function Timer(options) {
   this._initialized = false;
-  this._fps = typeof fps === 'number' ? fps | 0 : 60 /*default fps*/;
-  
-  this._timePerFrame = 1000 / this._fps;
-  this._timePerFrameMax = this._timePerFrame * 2;
 
-  this._ontick = [];
-  this._ondraw = [];
+  this._fixedDeltaTime = 1000 / 60;
+  this._fixedDeltaTimeInSeconds = this._fixedDeltaTime / 1000;
+  this._FRAME_TIME_MAX = 250;
+  this._elapsed = 0;
+
+  this._config(options);
+
+  if (this._autoStart) {
+    this.start();
+  }
 }
 
 Timer.prototype = {
@@ -58,7 +30,7 @@ Timer.prototype = {
       this._tick = tick.bind(this);
 
       this._isPaused = false;
-      this._previousTime = now();
+      this._prevTime = now();
       this._requestID = raf.request(this._tick);
 
       return true;
@@ -66,46 +38,84 @@ Timer.prototype = {
     return false;
   },
 
-  ontick: function(callback) {
-    if (typeof callback === 'function') {
-      this._ontick.push(callback);
-    }
-  },
-
-  ondraw: function(callback) {
-    if (typeof callback === 'function') {
-      this._ondraw.push(callback);
-    }
-  },
-
   /** pauses the timer */
-  pause: function () {
+  pause: function() {
     if (this._initialized && this._isPaused) {
       return false;
     }
 
     this._isPaused = true;
     raf.cancel(this._requestID);
+
+    this._pauseTime = now();
+    this._onPause();
+
     return true;
   },
 
   /** resumes the timer */
-  resume: function () {
+  resume: function() {
     if (this._initialized && !this._isPaused) {
       return false;
     }
 
+    var pauseDuration;
+
     this._isPaused = false;
-    this._previousTime = now();
+    this._prevTime = now();
+
+    pauseDuration = this._prevTime - this._pauseTime;
+    this._onResume(pauseDuration);
+
     this._requestID = raf.request(this._tick);
 
     return true;
   },
 
+  togglePause: function() {
+    if (this._isPaused) {
+      this.resume();
+    } else {
+      this.pause();
+    }
+  },
+
   /** returns true if the timer is paused */
   isPaused: function () {
     return this._isPaused;
+  },
+
+  _config: function(options) {
+    var empty = function() {};
+
+    this._update = options.update || empty;
+    this._render = options.render || empty;
+    this._onPause = options.onPause || empty;
+    this._onResume = options.onResume || empty;
+
+    this._autoStart = options.autoStart == null ? true : options.autoStart;
   }
 };
 
-module.exports = Timer; // CommonJS Module
+function tick() {
+  var curTime = now();
+  var frameTime = curTime - this._prevTime;
+
+  if (frameTime > this._FRAME_TIME_MAX) {
+    frameTime = this._FRAME_TIME_MAX;
+  }
+
+  this._prevTime = curTime;
+
+  this._accumulator += frameTime;
+
+  while(this._accumulator >= this._fixedDeltaTime) {
+    this._accumulator -= this._fixedDeltaTime;
+    this._elapsed += this._fixedDeltaTime;
+    this._update(this._fixedDeltaTimeInSeconds, this._elapsed);
+  }
+
+  this._render();
+
+  this._requestID = raf.request(this._tick);
+}
