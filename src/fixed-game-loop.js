@@ -9,6 +9,8 @@ module.exports = Timer;
 function Timer(options) {
   this._initialized = false;
 
+  this._curTime = 0;
+  this._frametime = 0;
   this._fixedDeltaTime = 1000 / 60;
   this._fixedDeltaTimeInSeconds = this._fixedDeltaTime / 1000;
   this._FRAME_TIME_MAX = 250;
@@ -98,11 +100,11 @@ Timer.prototype = {
 };
 
 function tick() {
-  var curTime = now();
-  var frameTime = curTime - this._prevTime;
+  this._curTime = now();
+  this._frameTime = this._curTime - this._prevTime;
 
-  if (frameTime > this._FRAME_TIME_MAX) {
-    frameTime = this._FRAME_TIME_MAX;
+  if (this._frameTime > this._FRAME_TIME_MAX) {
+    this._frameTime = this._FRAME_TIME_MAX;
   }
 
   this._prevTime = curTime;
