@@ -1,5 +1,5 @@
 var now = require('./date-now'),
-  raf = require('./raf');
+  getRAF = require('./raf').getRAF;
 
 module.exports = Timer;
 
@@ -16,7 +16,11 @@ function Timer(options) {
   this._FRAME_TIME_MAX = 250;
   this._elapsed = 0;
 
+  this._avoidRAF = options.avoidRAF || false;
+
   this._config(options);
+
+  this._raf = getRAF(this._avoidRAF);
 
   if (this._autoStart) {
     this.start();
@@ -33,7 +37,7 @@ Timer.prototype = {
 
       this._isPaused = false;
       this._prevTime = now();
-      this._requestID = raf.request(this._tick);
+      this._requestID = this._raf.request(this._tick);
 
       return true;
     }
@@ -47,7 +51,7 @@ Timer.prototype = {
     }
 
     this._isPaused = true;
-    raf.cancel(this._requestID);
+    this._raf.cancel(this._requestID);
 
     this._pauseTime = now();
     this._onPause();
@@ -69,7 +73,7 @@ Timer.prototype = {
     pauseDuration = this._prevTime - this._pauseTime;
     this._onResume(pauseDuration);
 
-    this._requestID = raf.request(this._tick);
+    this._requestID = this._raf.request(this._tick);
 
     return true;
   },
@@ -94,7 +98,6 @@ Timer.prototype = {
     this._render = options.render || empty;
     this._onPause = options.onPause || empty;
     this._onResume = options.onResume || empty;
-
     this._autoStart = options.autoStart == null ? true : options.autoStart;
   }
 };
@@ -107,9 +110,9 @@ function tick() {
     this._frameTime = this._FRAME_TIME_MAX;
   }
 
-  this._prevTime = curTime;
+  this._prevTime = this._curTime;
 
-  this._accumulator += frameTime;
+  this._accumulator += this._frameTime;
 
   while(this._accumulator >= this._fixedDeltaTime) {
     this._accumulator -= this._fixedDeltaTime;
@@ -118,6 +121,5 @@ function tick() {
   }
 
   this._render();
-
-  this._requestID = raf.request(this._tick);
+  this._requestID = this._raf.request(this._tick);
 }
