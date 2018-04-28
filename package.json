@@ -1,12 +1,13 @@
 {
   "name": "fixed-game-loop",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "a fixed-rate game loop",
   "author": "Luiz \"Bills\" <luizpbills@gmail.com>",
   "main": "index.js",
   "scripts": {
     "min": "cd build && uglifyjs -cm -o fixed-game-loop.min.js -- fixed-game-loop.js",
-    "build": "browserify index.js -s Timer > build/fixed-game-loop.js && npm run min"
+    "build": "browserify index.js -s Timer > build/fixed-game-loop.js && npm run min",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
