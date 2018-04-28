@@ -3,12 +3,11 @@
   "version": "0.2.0",
   "description": "a fixed-rate game loop",
   "author": "Luiz \"Bills\" <luizpbills@gmail.com>",
-
   "main": "index.js",
   "scripts": {
-    "build": "browserify ./ -s Timer > build/fixed-game-loop.js"
+    "min": "cd build && uglifyjs -cm -o fixed-game-loop.min.js -- fixed-game-loop.js",
+    "build": "browserify index.js -s Timer > build/fixed-game-loop.js && npm run min"
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/LiteEngine/fixed-game-loop.git"
@@ -16,7 +15,6 @@
   "bugs": {
     "url": "https://github.com/LiteEngine/fixed-game-loop/issues"
   },
-
   "keywords": [
     "fixed",
     "game",
@@ -28,5 +26,9 @@
     "pause",
     "timer"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^16.2.0",
+    "uglify-js": "^3.3.22"
+  }
 }
