@@ -17,14 +17,17 @@ for (; x < l; ++x) {
 
 if (!requestAnimationFrame || !cancelAnimationFrame) {
   var now = require('./date-now'),
-    lastTime = 0, max = Math.max;
+      currTime = 0,
+      timeToCall = 0,
+      id = null,
+      lastTime = 0;
 
   requestAnimationFrame = function(callback, element) {
-    var currTime = now(),
-      timeToCall = Math.max(0, 16 - (currTime - lastTime)),
-      id = global.setTimeout(function () {
-        callback(currTime + timeToCall);
-      }, timeToCall);
+    currTime = now();
+    timeToCall = Math.max(0, 16 - (currTime - lastTime));
+    id = global.setTimeout(function () {
+      callback(currTime + timeToCall);
+    }, timeToCall);
     lastTime = currTime + timeToCall;
     return id;
   };
