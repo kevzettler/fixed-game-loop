@@ -6,7 +6,7 @@
 
 ### Usage
 
-see `./test/usage.js`
+see [`./test/usage.js`](test/usage.js)
 
 ### How to build
 
