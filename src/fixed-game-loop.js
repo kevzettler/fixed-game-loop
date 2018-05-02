@@ -107,9 +107,9 @@ function tick() {
     this._frameTime = this._FRAME_TIME_MAX;
   }
 
-  this._prevTime = curTime;
+  this._prevTime = this._curTime;
 
-  this._accumulator += frameTime;
+  this._accumulator += this._frameTime;
 
   while(this._accumulator >= this._fixedDeltaTime) {
     this._accumulator -= this._fixedDeltaTime;
