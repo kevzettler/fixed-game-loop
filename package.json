@@ -1,6 +1,6 @@
 {
   "name": "fixed-game-loop",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "a fixed-rate game loop",
   "author": "Luiz \"Bills\" <luizpbills@gmail.com>",
   "main": "index.js",
