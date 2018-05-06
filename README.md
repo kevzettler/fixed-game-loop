@@ -15,7 +15,5 @@ npm install
 npm run build
 ```
 
-===
-
 ### License
 Licensed under MIT License (MIT)
