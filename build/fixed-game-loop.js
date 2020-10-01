@@ -27,8 +27,10 @@ function Timer(options) {
   this._frametime = 0;
   this._fixedDeltaTime = 1000 / 60;
   this._fixedDeltaTimeInSeconds = this._fixedDeltaTime / 1000;
+  this._interpolateAlpha = 0;
   this._FRAME_TIME_MAX = 250;
   this._elapsed = 0;
+  this._tickCount = 0;
 
   this._config(options);
 
@@ -131,9 +133,12 @@ function tick() {
     this._update(this._fixedDeltaTimeInSeconds, this._elapsed);
   }
 
-  this._render();
+  this._interpolateAlpha = (this._accumulator / 1000) / this._fixedDeltaTimeInSeconds;
+  this._render(this._interpolateAlpha);
 
   this._requestID = raf.request(this._tick);
+
+  this._tickCount++;
 }
 
 },{"./date-now":2,"./raf":4}],4:[function(require,module,exports){

@@ -16,6 +16,7 @@ function Timer(options) {
   this._interpolateAlpha = 0;
   this._FRAME_TIME_MAX = 250;
   this._elapsed = 0;
+  this._tickCount = 0;
 
   this._config(options);
 
@@ -122,4 +123,6 @@ function tick() {
   this._render(this._interpolateAlpha);
 
   this._requestID = raf.request(this._tick);
+
+  this._tickCount++;
 }
