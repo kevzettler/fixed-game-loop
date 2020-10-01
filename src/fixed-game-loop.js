@@ -116,7 +116,7 @@ function tick() {
   while(this._accumulator >= this._fixedDeltaTime) {
     this._accumulator -= this._fixedDeltaTime;
     this._elapsed += this._fixedDeltaTime;
-    this._update(this._fixedDeltaTimeInSeconds, this._elapsed);
+    this._update(this._fixedDeltaTimeInSeconds, this._elapsed, this._tickCount);
   }
 
   this._interpolateAlpha = (this._accumulator / 1000) / this._fixedDeltaTimeInSeconds;
