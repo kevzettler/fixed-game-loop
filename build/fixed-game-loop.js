@@ -450,7 +450,7 @@ function tick() {
 var raf = require('raf');
 
 module.exports.request = raf;
-module.exports.cancel = raf.cacnel
+module.exports.cancel = raf.cancel;
 
 },{"raf":4}]},{},[1])(1)
 });
