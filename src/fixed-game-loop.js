@@ -12,7 +12,10 @@ function Timer(options) {
   this._curTime = 0;
   this._frametime = 0;
   this._fixedDeltaTime = 1000 / 60;
+  console.log('**********fixedDeltatime********* ', this._fixedDeltaTime);
+
   this._fixedDeltaTimeInSeconds = this._fixedDeltaTime / 1000;
+  console.log('**********fixedDeltatimeInSeconds********* ', this._fixedDeltaTimeInSeconds);
   this._interpolateAlpha = 0;
   this._FRAME_TIME_MAX = 250;
   this._elapsed = 0;
@@ -117,12 +120,11 @@ function tick() {
     this._accumulator -= this._fixedDeltaTime;
     this._elapsed += this._fixedDeltaTime;
     this._update(this._fixedDeltaTimeInSeconds, this._elapsed, this._tickCount);
+    this._tickCount++;
   }
 
   this._interpolateAlpha = (this._accumulator / 1000) / this._fixedDeltaTimeInSeconds;
   this._render(this._interpolateAlpha);
 
   this._requestID = raf.request(this._tick);
-
-  this._tickCount++;
 }
