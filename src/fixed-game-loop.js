@@ -12,10 +12,7 @@ function Timer(options) {
   this._curTime = 0;
   this._frametime = 0;
   this._fixedDeltaTime = 1000 / 60;
-  console.log('**********fixedDeltatime********* ', this._fixedDeltaTime);
-
   this._fixedDeltaTimeInSeconds = this._fixedDeltaTime / 1000;
-  console.log('**********fixedDeltatimeInSeconds********* ', this._fixedDeltaTimeInSeconds);
   this._interpolateAlpha = 0;
   this._FRAME_TIME_MAX = 250;
   this._elapsed = 0;
